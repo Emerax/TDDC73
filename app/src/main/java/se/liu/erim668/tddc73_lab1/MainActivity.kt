@@ -1,13 +1,12 @@
 package se.liu.erim668.tddc73_lab1
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.constraint.ConstraintSet
+import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RatingBar
-import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,25 +17,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun generateActivityOneKotlin() {
-        val layout: ConstraintLayout = ConstraintLayout(this)
+        val layout = ConstraintLayout(this)
         layout.id = R.id.layout
 
-        val button: Button = Button(this)
+        val button = Button(this)
         button.id = R.id.activity_one_button
         button.setText(R.string.activity1_buttonText)
         button.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
 
-        val textField: EditText = EditText(this)
+        val textField = EditText(this)
         textField.id = R.id.activity_one_textField
         textField.setText(R.string.activity1_plainText)
         textField.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_CONSTRAINT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
 
-        val ratingBar: RatingBar = RatingBar(this)
+        val ratingBar = RatingBar(this)
         ratingBar.id = R.id.activity_one_ratingBar
         ratingBar.numStars = 5
         ratingBar.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
 
-        val multiLineText: EditText = EditText(this)
+        val multiLineText = EditText(this)
         multiLineText.id = R.id.activity_one_multiText
         multiLineText.setText(R.string.activity1_multiLineText)
         multiLineText.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_CONSTRAINT)
