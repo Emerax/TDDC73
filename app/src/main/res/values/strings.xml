@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">TDDC73_lab1</string>
+    <string name="activity1_multiLineText">ett text fält som\n
+        klarar\n
+        av\n
+        flera rader\n
+        och använder det skärmutrymme som\n
+        \n
+        finns
+    </string>
+    <string name="activity1_buttonText">KNAPP</string>
+    <string name="activity1_plainText">Text fält</string>
 </resources>
