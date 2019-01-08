@@ -13,4 +13,5 @@
     <item name="activity_two_passwordEdit" type="id" />
     <item name="activity_two_emailEdit" type="id" />
     <item name="activity_two_seekBar" type="id" />
+    <item name="activity_two_barrier" type="id" />
 </resources>
