@@ -12,8 +12,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity1_xml)
-        generateActivityOneKotlin()
+        val activityOne = R.layout.activity1_xml;
+        val activityTwo = R.layout.activity2_xml;
+        setContentView(activityTwo)
+        //generateActivityOneKotlin()
     }
 
     fun generateActivityOneKotlin() {

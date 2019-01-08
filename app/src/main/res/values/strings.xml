@@ -10,4 +10,11 @@
     </string>
     <string name="activity1_buttonText">KNAPP</string>
     <string name="activity1_plainText">Text fält</string>
+    <string name="activity_two_nameLabel">Namn</string>
+    <string name="activity_two_passwordText">Lösenord</string>
+    <string name="activity_two_emailText">Epost</string>
+    <string name="activity_two_ageText">Ålder</string>
+    <string name="activity_two_nameInput">Anders</string>
+    <string name="activity_two_passwordInput">1234567</string>
+    <string name="activity_two_emailInput">anders.froberg@liu.se</string>
 </resources>
