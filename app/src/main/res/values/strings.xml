@@ -17,4 +17,13 @@
     <string name="activity_two_nameInput">Anders</string>
     <string name="activity_two_passwordInput">1234567</string>
     <string name="activity_two_emailInput">anders.froberg@liu.se</string>
+    <string name="activity_three_q1">Hur trivs du på LiU</string>
+    <string name="activity_three_good">Bra</string>
+    <string name="activity_three_veryGood">Mycket Bra</string>
+    <string name="activity_three_superGood">Jättebra</string>
+    <string name="activity_three_q2">Läser du på LiTH</string>
+    <string name="activity_three_yes">Ja</string>
+    <string name="actvitity_three_no">Nej</string>
+    <string name="activity_three_q3">Är detta LiUs logotyp</string>
+    <string name="activity_three_buttonText">SKICKA IN</string>
 </resources>
