@@ -5,4 +5,12 @@
     <item name="activity_one_textField" type="id" />
     <item name="activity_one_ratingBar" type="id" />
     <item name="activity_one_multiText" type="id" />
+    <item name="activity_two_nameText" type="id" />
+    <item name="activity_two_passwordText" type="id" />
+    <item name="activity_two_emailText" type="id" />
+    <item name="activity_two_ageText" type="id" />
+    <item name="activity_two_nameEdit" type="id" />
+    <item name="activity_two_passwordEdit" type="id" />
+    <item name="activity_two_emailEdit" type="id" />
+    <item name="activity_two_seekBar" type="id" />
 </resources>
