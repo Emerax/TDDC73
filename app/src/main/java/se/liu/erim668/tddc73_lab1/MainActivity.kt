@@ -7,11 +7,8 @@ import android.support.constraint.ConstraintLayout
 import android.support.constraint.ConstraintSet
 import android.support.v7.app.AppCompatActivity
 import android.text.InputType
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
-import se.liu.erim668.tddc73_lab1.R.id.button
-import se.liu.erim668.tddc73_lab1.R.id.text
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,9 +17,10 @@ class MainActivity : AppCompatActivity() {
         val activityOne = R.layout.activity1_xml
         val activityTwo = R.layout.activity2_xml
         val activityThree = R.layout.activity3_xml
-        setContentView(activityThree)
+        //setContentView(activityThree)
         //generateActivityOneKotlin()
         //generateActivityTwoKotlin()
+        generateActivityThreeKotlin()
     }
 
     fun generateActivityOneKotlin() {
@@ -173,6 +171,136 @@ class MainActivity : AppCompatActivity() {
         set.connect(seekBar.id, ConstraintSet.END, layout.id, ConstraintSet.END, 0)
         set.connect(seekBar.id, ConstraintSet.TOP, emailEdit.id, ConstraintSet.BOTTOM, 16)
         set.connect(seekBar.id, ConstraintSet.BOTTOM, ageText.id, ConstraintSet.BOTTOM, 0)
+
+        set.applyTo(layout)
+
+        setContentView(layout)
+    }
+
+    fun generateActivityThreeKotlin(){
+        val layout = ConstraintLayout(this)
+        layout.id = R.id.layout
+
+        val q1Text = TextView(this)
+        q1Text.id = R.id.activity_three_q1
+        q1Text.setText(R.string.activity_three_q1)
+        q1Text.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+
+        val checkBoxGood = CheckBox(this)
+        checkBoxGood.id = R.id.activity_three_good
+        checkBoxGood.setText(R.string.activity_three_good)
+        checkBoxGood.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+
+        val checkBoxVeryGood = CheckBox(this)
+        checkBoxVeryGood.id = R.id.activity_three_veryGood
+        checkBoxVeryGood.setText(R.string.activity_three_veryGood)
+        checkBoxVeryGood.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+
+        val checkBoxSuperGood = CheckBox(this)
+        checkBoxSuperGood.id = R.id.activity_three_superGood
+        checkBoxSuperGood.setText(R.string.activity_three_superGood)
+        checkBoxSuperGood.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+
+        val q2Text = TextView(this)
+        q2Text.id = R.id.activity_three_q2
+        q2Text.setText(R.string.activity_three_q2)
+        q2Text.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+
+        val checkBoxQ2Yes = CheckBox(this)
+        checkBoxQ2Yes.id = R.id.activity_three_q2yes
+        checkBoxQ2Yes.setText(R.string.activity_three_yes)
+        checkBoxQ2Yes.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+
+        val checkBoxQ2No = CheckBox(this)
+        checkBoxQ2No.id = R.id.activity_three_q2No
+        checkBoxQ2No.setText(R.string.actvitity_three_no)
+        checkBoxQ2No.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+
+        val image = ImageView(this)
+        image.id = R.id.activity_three_image
+        image.setImageResource(R.drawable.liu_logo)
+        image.layoutParams = ConstraintLayout.LayoutParams(182, 182)
+
+        val q3Text = TextView(this)
+        q3Text.id = R.id.activity_three_q3
+        q3Text.setText(R.string.activity_three_q3)
+        q3Text.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+
+        val checkBoxQ3Yes = CheckBox(this)
+        checkBoxQ3Yes.id = R.id.activity_three_q3yes
+        checkBoxQ3Yes.setText(R.string.activity_three_yes)
+        checkBoxQ3Yes.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+
+        val checkBoxQ3No = CheckBox(this)
+        checkBoxQ3No.id = R.id.activity_three_q3No
+        checkBoxQ3No.setText(R.string.actvitity_three_no)
+        checkBoxQ3No.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+
+        val button = Button(this)
+        button.id = R.id.activity_three_button
+        button.setText(R.string.activity_three_buttonText)
+        button.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_CONSTRAINT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+
+        layout.addView(q1Text)
+        layout.addView(checkBoxGood)
+        layout.addView(checkBoxVeryGood)
+        layout.addView(checkBoxSuperGood)
+        layout.addView(q2Text)
+        layout.addView(checkBoxQ2Yes)
+        layout.addView(checkBoxQ2No)
+        layout.addView(image)
+        layout.addView(q3Text)
+        layout.addView(checkBoxQ3Yes)
+        layout.addView(checkBoxQ3No)
+        layout.addView(button)
+
+        val set = ConstraintSet()
+        set.clone(layout)
+
+        set.connect(q1Text.id, ConstraintSet.LEFT, layout.id, ConstraintSet.LEFT, 0)
+        set.connect(q1Text.id, ConstraintSet.RIGHT, layout.id, ConstraintSet.RIGHT, 0)
+        set.connect(q1Text.id, ConstraintSet.TOP, layout.id, ConstraintSet.TOP, 0)
+
+        set.connect(checkBoxGood.id, ConstraintSet.LEFT, layout.id, ConstraintSet.LEFT, 0)
+        set.connect(checkBoxGood.id, ConstraintSet.TOP, checkBoxVeryGood.id, ConstraintSet.TOP, 0)
+        set.connect(checkBoxGood.id, ConstraintSet.RIGHT, checkBoxVeryGood.id, ConstraintSet.LEFT, 0)
+
+        set.connect(checkBoxVeryGood.id, ConstraintSet.LEFT, checkBoxGood.id, ConstraintSet.RIGHT, 0)
+        set.connect(checkBoxVeryGood.id, ConstraintSet.TOP, q1Text.id, ConstraintSet.BOTTOM, 0)
+        set.connect(checkBoxVeryGood.id, ConstraintSet.RIGHT, checkBoxSuperGood.id, ConstraintSet.LEFT, 0)
+
+        set.connect(checkBoxSuperGood.id, ConstraintSet.LEFT, checkBoxVeryGood.id, ConstraintSet.RIGHT, 0)
+        set.connect(checkBoxSuperGood.id, ConstraintSet.TOP, checkBoxVeryGood.id, ConstraintSet.TOP, 0)
+
+        set.connect(q2Text.id, ConstraintSet.LEFT, layout.id, ConstraintSet.LEFT, 0)
+        set.connect(q2Text.id, ConstraintSet.RIGHT, layout.id, ConstraintSet.RIGHT, 0)
+        set.connect(q2Text.id, ConstraintSet.TOP, checkBoxVeryGood.id, ConstraintSet.BOTTOM, 0)
+
+        set.connect(checkBoxQ2Yes.id, ConstraintSet.LEFT, layout.id, ConstraintSet.LEFT, 0)
+        set.connect(checkBoxQ2Yes.id, ConstraintSet.RIGHT, checkBoxQ2No.id, ConstraintSet.LEFT, 0)
+        set.connect(checkBoxQ2Yes.id, ConstraintSet.TOP, checkBoxQ2No.id, ConstraintSet.TOP, 0)
+
+        set.connect(checkBoxQ2No.id, ConstraintSet.LEFT, checkBoxQ2Yes.id, ConstraintSet.RIGHT, 0)
+        set.connect(checkBoxQ2No.id, ConstraintSet.TOP, q2Text.id, ConstraintSet.BOTTOM, 0)
+
+        set.connect(image.id, ConstraintSet.LEFT, layout.id, ConstraintSet.LEFT, 0)
+        set.connect(image.id, ConstraintSet.RIGHT, layout.id, ConstraintSet.RIGHT, 0)
+        set.connect(image.id, ConstraintSet.TOP, checkBoxQ2No.id, ConstraintSet.BOTTOM, 0)
+
+        set.connect(q3Text.id, ConstraintSet.LEFT, layout.id, ConstraintSet.LEFT, 0)
+        set.connect(q3Text.id, ConstraintSet.RIGHT, layout.id, ConstraintSet.RIGHT, 0)
+        set.connect(q3Text.id, ConstraintSet.TOP, image.id, ConstraintSet.BOTTOM, 0)
+
+        set.connect(checkBoxQ3Yes.id, ConstraintSet.LEFT, layout.id, ConstraintSet.LEFT, 0)
+        set.connect(checkBoxQ3Yes.id, ConstraintSet.RIGHT, checkBoxQ3No.id, ConstraintSet.LEFT, 0)
+        set.connect(checkBoxQ3Yes.id, ConstraintSet.TOP, checkBoxQ3No.id, ConstraintSet.TOP, 0)
+
+        set.connect(checkBoxQ3No.id, ConstraintSet.LEFT, checkBoxQ3Yes.id, ConstraintSet.RIGHT, 0)
+        set.connect(checkBoxQ3No.id, ConstraintSet.TOP, q3Text.id, ConstraintSet.BOTTOM, 0)
+
+        set.connect(button.id, ConstraintSet.LEFT, layout.id, ConstraintSet.LEFT, 0)
+        set.connect(button.id, ConstraintSet.RIGHT, layout.id, ConstraintSet.RIGHT, 0)
+        set.connect(button.id, ConstraintSet.TOP, checkBoxQ3No.id, ConstraintSet.BOTTOM, 0)
 
         set.applyTo(layout)
 

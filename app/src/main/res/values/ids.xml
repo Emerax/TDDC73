@@ -14,4 +14,16 @@
     <item name="activity_two_emailEdit" type="id" />
     <item name="activity_two_seekBar" type="id" />
     <item name="activity_two_barrier" type="id" />
+    <item name="activity_three_q1" type="id" />
+    <item name="activity_three_good" type="id" />
+    <item name="activity_three_veryGood" type="id" />
+    <item name="activity_three_superGood" type="id" />
+    <item name="activity_three_q2" type="id" />
+    <item name="activity_three_q2yes" type="id" />
+    <item name="activity_three_q2No" type="id" />
+    <item name="activity_three_image" type="id" />
+    <item name="activity_three_q3" type="id" />
+    <item name="activity_three_q3yes" type="id" />
+    <item name="activity_three_q3No" type="id" />
+    <item name="activity_three_button" type="id" />
 </resources>
