@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Lab1_Kotlin_XML</string>
+    <string name="image_text">FANCY IMAGE</string>
+    <string name="button_text">BUTTON</string>
+    <string name="email_string">Email</string>
 </resources>
