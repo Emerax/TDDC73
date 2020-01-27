@@ -84,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 alignment: Alignment.topCenter,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.only(top: 100),
+                    padding: EdgeInsets.only(top: 120),
                     child: Card(
                         elevation: 10,
                         margin: EdgeInsets.all(20),
@@ -187,26 +187,123 @@ class _MyHomePageState extends State<MyHomePage> {
                         )
                     ),
                   ),
-                  Card(
-                      elevation: 10,
-                      margin: EdgeInsets.all(50),
-                      semanticContainer: true,
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      child: Column(
-                        children: <Widget>[
-                          ClipRect(
-                            child: Image.asset(
-                              "images/1.jpeg",
+                  IndexedStack(
+                    index: 0,
+                    children: <Widget>[
+                      //Front of the credit card
+                      Card(
+                        elevation: 10,
+                        margin: EdgeInsets.all(50),
+                        semanticContainer: true,
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage("images/1.jpeg"),
                               fit: BoxFit.fill,
-                            ),
+                              alignment: Alignment.topCenter,
+                            )
                           ),
-                          Row(
+                          child: Column(
                             children: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Image(
+                                    image: AssetImage("images/chip.png"),
+                                    fit: BoxFit.scaleDown,
+                                    width: 60,
+                                    height: 60,
+                                  ),
+                                  Image(
+                                    image: AssetImage("images/visa.png"),
+                                    fit: BoxFit.scaleDown,
+                                    width: 60,
+                                    height: 60,
+                                  )
+                                ],
+                              ),
+                              SizedBox(height: 20),
+                              Container(
+                                  decoration: BoxDecoration(
+                                    //border: Border.all(color: Colors.white)
+                                  ),
+                                  child: FittedBox(
+                                    fit: BoxFit.fitWidth,
+                                    child: Text(
+                                      "1111 2222 3333 4444",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 24
+                                      ),
+                                    ),
+                                  )
+                              ),
+                              SizedBox(height: 20),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      //border: Border.all(color: Colors.white),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          "Card Holder",
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 9
+                                          ),
+                                        ),
+                                        Text(
+                                          "Place Holder",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18
+                                          )
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      //border: Border.all(color: Colors.white)
+                                    ),
+                                    child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        "Expires",
+                                        style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 9
+                                        ),
+                                      ),
+                                      Text(
+                                          "MM/YY",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 18
+                                          )
+                                      )
+                                    ],
+                                  ),
+                                  )
+                                ],
+                              )
                             ],
-                          )
-                        ],
+                          ),
+                        ),
                       ),
-                    ),
+                      //Back of the credit card
+                      Card(
+
+                      )
+                    ],
+                  )
                 ],
               ),
             ],
