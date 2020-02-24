@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() => runApp(MyApp());
 
@@ -44,20 +47,85 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int backgroundIndex = new Random().nextInt(25) + 1;
+  int cardSideIndex = 0;
   DateTime expiration = DateTime.now();
+  TextEditingController cardNumberController = new TextEditingController();
+  TextEditingController cardHolderController = new TextEditingController();
+  TextEditingController cvvController = new TextEditingController();
+
+  void initState() {
+    super.initState();
+    cardNumberController.addListener(updateCardNumber);
+    cardHolderController.addListener(updateCardHolder);
+    cvvController.addListener(updateCVV);
+  }
+
+  void dispose() {
+    cardNumberController.dispose();
+    super.dispose();
+  }
+
+  void updateCardNumber(){
+    String strippedText = cardNumberController.text.replaceAll(new RegExp(r"[^0-9]"), "");
+    if(strippedText.length > 16){
+      strippedText = strippedText.substring(0, 16);
+    }
+    String newText = "";
+    while(strippedText.length > 4){
+      newText = "$newText${strippedText.substring(0, 4)} ";
+      strippedText = strippedText.substring(4);
+    }
+    newText = "$newText$strippedText";
+    setState(() {
+      cardSideIndex = 0;
+      cardNumberController.value = cardNumberController.value.copyWith(
+        text: newText,
+        selection: TextSelection(baseOffset: newText.length, extentOffset: newText.length),
+        composing: TextRange.empty,
+      );
+    });
+  }
+
+  void updateCardHolder() {
+    String cardHolder = cardHolderController.text.toUpperCase();
+
+    setState(() {
+      cardSideIndex = 0;
+      cardHolderController.value = cardHolderController.value.copyWith(
+        text: cardHolder,
+        //selection: TextSelection(baseOffset: newText.length, extentOffset: newText.length),
+        composing: TextRange.empty,
+      );
+    });
+  }
 
   void updateExpiration(int newMonth, int newYear) {
     setState(() {
+      cardSideIndex = 0;
       expiration = new DateTime.utc(newYear, newMonth);
     });
-    print("PRNT: Expiration date updated!\n Now: $expiration");
   }
 
-  void toast(String message) {
-    Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text(message),
-      duration: Duration(seconds: 3),
-    ));
+  void updateCVV(){
+    String cvv = cvvController.text;
+    if(cvv.length > 3){
+      cvv = cvv.substring(0,3);
+    }
+    setState(() {
+      cardSideIndex = 1;
+      cvvController.value = cvvController.value.copyWith(
+          text: cvv,
+          composing: TextRange.empty,
+          selection: TextSelection(baseOffset: cvv.length, extentOffset: cvv.length)
+      );
+    });
+  }
+
+  String formatExpiration(DateTime date){
+    String month = "${expiration.month.toString().length == 2 ? expiration.month : "0" + expiration.month.toString()}";
+    String year = "${date.year.toString().substring(2)}";
+    return "$month/$year";
   }
 
   @override
@@ -94,11 +162,17 @@ class _MyHomePageState extends State<MyHomePage> {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: <Widget>[
                               TextFormField(
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  WhitelistingTextInputFormatter.digitsOnly
+                                ],
+                                controller: cardNumberController,
                                 decoration: const InputDecoration(
                                   labelText: "Card Number",
                                 ),
                               ),
                               TextFormField(
+                                controller: cardHolderController,
                                 decoration: const InputDecoration(
                                   labelText: "Card Holder",
                                 ),
@@ -169,7 +243,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text("CVV"),
-                                            TextField(),
+                                            TextField(
+                                              controller: cvvController,
+                                              inputFormatters: <TextInputFormatter>[
+                                                WhitelistingTextInputFormatter.digitsOnly
+                                              ],
+                                              keyboardType: TextInputType.number,
+                                            ),
                                           ],
                                         ),
                                       )
@@ -180,7 +260,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 color: Colors.blue,
                                 textColor: Colors.white,
                                 child: Text("Submit"),
-                                onPressed: () => {toast("Message")},
+                                onPressed: () => {print("BUTTON")},
                               )
                             ],
                           ),
@@ -188,7 +268,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                   IndexedStack(
-                    index: 0,
+                    index: cardSideIndex,
                     children: <Widget>[
                       //Front of the credit card
                       Card(
@@ -200,7 +280,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage("images/1.jpeg"),
+                              image: AssetImage("images/$backgroundIndex.jpeg"),
                               fit: BoxFit.fill,
                               alignment: Alignment.topCenter,
                             )
@@ -229,14 +309,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                   decoration: BoxDecoration(
                                     //border: Border.all(color: Colors.white)
                                   ),
-                                  child: FittedBox(
-                                    fit: BoxFit.fitWidth,
-                                    child: Text(
-                                      "1111 2222 3333 4444",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 24
-                                      ),
+                                  child: Text(
+                                    "${cardNumberController.text}",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 24
                                     ),
                                   )
                               ),
@@ -259,7 +336,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                           ),
                                         ),
                                         Text(
-                                          "Place Holder",
+                                          "${cardHolderController.text}",
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 18
@@ -283,7 +360,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         ),
                                       ),
                                       Text(
-                                          "MM/YY",
+                                          "${formatExpiration(expiration)}",
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 18
@@ -300,8 +377,70 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       //Back of the credit card
                       Card(
-
-                      )
+                        elevation: 10,
+                        margin: EdgeInsets.all(50),
+                        semanticContainer: true,
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        child: Container(
+                          //padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage("images/$backgroundIndex.jpeg"),
+                                fit: BoxFit.fill,
+                                alignment: Alignment.topCenter,
+                              )
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container( //Magnetic strip
+                                width: 20,
+                                height: 30,
+                                color: Colors.black,
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 5
+                                    ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: <Widget>[
+                                    Text(
+                                      "CVV",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 9
+                                      ),
+                                    ),
+                                    TextField(
+                                      controller: cvvController,
+                                      enabled: false,
+                                      textDirection: TextDirection.rtl,
+                                      decoration: InputDecoration(
+                                        fillColor: Colors.white,
+                                        filled: true,
+                                      ),
+                                      style: TextStyle(
+                                        color: Colors.black
+                                      ),
+                                    ),
+                                    Image(
+                                      image: AssetImage("images/visa.png"),
+                                      fit: BoxFit.scaleDown,
+                                      width: 60,
+                                      height: 60,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   )
                 ],
