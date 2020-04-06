@@ -49,6 +49,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int backgroundIndex = new Random().nextInt(25) + 1;
   int cardSideIndex = 0;
+  double companyOpacity = 0;
+  String company = "visa";
   DateTime expiration = DateTime.now();
   TextEditingController cardNumberController = new TextEditingController();
   TextEditingController cardHolderController = new TextEditingController();
@@ -77,6 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
       strippedText = strippedText.substring(4);
     }
     newText = "$newText$strippedText";
+
     setState(() {
       cardSideIndex = 0;
       cardNumberController.value = cardNumberController.value.copyWith(
@@ -84,7 +87,44 @@ class _MyHomePageState extends State<MyHomePage> {
         selection: TextSelection(baseOffset: newText.length, extentOffset: newText.length),
         composing: TextRange.empty,
       );
+      updateCompany();
     });
+  }
+
+  void updateCompany() {
+    double newOpacity = 1;
+    if(cardNumberController.text.length >= 2) {
+      String companyIdentifier = cardNumberController.text.substring(0, 2);
+      switch(companyIdentifier.substring(0, 1)){
+        case "4":
+          company = "visa";
+          break;
+        case "5":
+          company = "mastercard";
+          break;
+        case "3":
+          switch(companyIdentifier.substring(1, 2)){
+            case "4":
+            case "7":
+              company = "amex";
+              break;
+            case "0":
+            case "6":
+            case "8":
+              company = "dinersclub";
+              break;
+          }
+          break;
+        case "6":
+          company = "discover";
+          break;
+        default:
+          newOpacity = 0;
+      }
+    } else {
+      newOpacity = 0;
+    }
+    companyOpacity = newOpacity;
   }
 
   void updateCardHolder() {
@@ -296,11 +336,14 @@ class _MyHomePageState extends State<MyHomePage> {
                                     width: 60,
                                     height: 60,
                                   ),
-                                  Image(
-                                    image: AssetImage("images/visa.png"),
-                                    fit: BoxFit.scaleDown,
-                                    width: 60,
-                                    height: 60,
+                                  Opacity(
+                                    opacity: companyOpacity,
+                                    child: Image(
+                                      image: AssetImage("images/$company.png"),
+                                      fit: BoxFit.scaleDown,
+                                      width: 60,
+                                      height: 60,
+                                    ),
                                   )
                                 ],
                               ),
