@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Lab_3</string>
+    <string name="ProjectTitlePlaceholder">Placeholder</string>
+    <string name="projectURLPlaceholder">place/holder</string>
+    <string name="projectDescription">This is a description all right</string>
+    <string name="projectStars">Stars: 999</string>
+    <string name="projectForksPlaceholder">Forks: 888</string>
 </resources>

@@ -1,18 +1,21 @@
 package com.example.lab_3
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 
-class GithubProjectsAdapter : RecyclerView.Adapter<GithubProjectHolder>() {
+class GithubProjectsAdapter() : RecyclerView.Adapter<GithubProjectHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GithubProjectHolder {
-        TODO("Not yet implemented")
+        val projectCardView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.project_card, parent, false) as CardView
+        return GithubProjectHolder(projectCardView)
     }
 
     override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+        return 5
     }
 
     override fun onBindViewHolder(holder: GithubProjectHolder, position: Int) {
-        TODO("Not yet implemented")
     }
 }
