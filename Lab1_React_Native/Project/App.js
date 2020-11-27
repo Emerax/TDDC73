@@ -28,7 +28,7 @@ const App: () => React$Node = () => {
         <View style={{alignItems: "center" }}>
           <Image source={require('./images/education.png')}/>
         </View>
-        <View style={{justifyContent: "space-between"}}>
+        <View style={{justifyContent: "space-around"}}>
           <View style={{flexDirection: "row", justifyContent: 'space-around'}}>
             <View>
               <Button title="Button"/>

@@ -204,7 +204,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               TextFormField(
                                 keyboardType: TextInputType.number,
                                 inputFormatters: <TextInputFormatter>[
-                                  WhitelistingTextInputFormatter.digitsOnly
+                                  FilteringTextInputFormatter.digitsOnly
                                 ],
                                 controller: cardNumberController,
                                 decoration: const InputDecoration(
@@ -286,7 +286,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                             TextField(
                                               controller: cvvController,
                                               inputFormatters: <TextInputFormatter>[
-                                                WhitelistingTextInputFormatter.digitsOnly
+                                                FilteringTextInputFormatter.digitsOnly
                                               ],
                                               keyboardType: TextInputType.number,
                                             ),

@@ -1,0 +1,28 @@
+query FetchTrending {
+    search(query: "language:python sort:interactions", type: REPOSITORY, first: 10) {
+        edges {
+            cursor
+            node {
+                ... on Repository {
+                    name
+                    description
+                    nameWithOwner
+                    forkCount
+                    stargazerCount
+                    defaultBranchRef {
+                        target {
+                            ... on Commit {
+                                history {
+                                    totalCount
+                                }
+                            }
+                        }
+                    }
+                    licenseInfo {
+                        name
+                    }
+                }
+            }
+        }
+    }
+}
