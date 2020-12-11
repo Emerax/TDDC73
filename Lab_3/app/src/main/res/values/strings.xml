@@ -5,4 +5,8 @@
     <string name="projectDescription">This is a description all right</string>
     <string name="projectStars">Stars: 999</string>
     <string name="projectForksPlaceholder">Forks: 888</string>
+    <string name="placeholder">PLACEHOLDER</string>
+    <string name="license">License:</string>
+    <string name="forks">Forks</string>
+    <string name="stars">Stars:</string>
 </resources>

@@ -35,10 +35,10 @@
 
         <TextView
             android:id="@+id/ProjectDescription"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginLeft="4dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:text="@string/projectDescription"
@@ -59,6 +59,8 @@
             android:id="@+id/ProjectForks"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:layout_marginBottom="8dp"
             android:text="@string/projectForksPlaceholder"
             app:layout_constraintBottom_toBottomOf="parent"

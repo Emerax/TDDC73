@@ -6,12 +6,17 @@ plugins {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
 
-    viewBinding {
+    buildFeatures {
+        viewBinding true
+    }
+
+    dataBinding {
         enabled = true
     }
 
@@ -38,7 +43,6 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
 }
 
 dependencies {

@@ -1,5 +1,5 @@
-query FetchTrending {
-    search(query: "language:python sort:interactions", type: REPOSITORY, first: 10) {
+query FetchTrending($searchString: String!, $cursor: String) {
+    search(query: $searchString, type: REPOSITORY, first: 10, after: $cursor) {
         edges {
             cursor
             node {
