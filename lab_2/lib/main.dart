@@ -149,8 +149,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void updateCVV(){
     String cvv = cvvController.text;
-    if(cvv.length > 3){
-      cvv = cvv.substring(0,3);
+    if (company == "amex") {
+      if (cvv.length > 4) {
+        cvv = cvv.substring(0, 4);
+      }
+    } else {
+      if(cvv.length > 3) {
+        cvv = cvv.substring(0, 3);
+      }
     }
     setState(() {
       cardSideIndex = 1;
