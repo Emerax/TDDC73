@@ -57,7 +57,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
         viewAdapter = GithubProjectsAdapter(projects)
 
         viewAdapter.onItemClicked = { project ->
-            Log.d("LIST_MESSAGE", "Clicked item for project ${project.name}")
             val intent = Intent(this, ProjectDetails::class.java).apply {
                 putExtra("project_description", project.description)
                 putExtra("project_forks", project.forkCount)
@@ -73,7 +72,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener
             var cursor: String? = null
             for (item in channel) {
                 val searchResultData = try {
-                    apolloClient.query(FetchTrendingQuery("language:${selectedLanguage} sort:interactions", cursor = Input.fromNullable(cursor))).await().data
+                    //FIX: sort:stars sorterar efter stjärnor, ingenstans står detta i Githubs dokumentation dock...
+                    apolloClient.query(FetchTrendingQuery("language:${selectedLanguage} sort:stars", cursor = Input.fromNullable(cursor))).await().data
                 } catch (e: ApolloException) {
                     Log.d("GITHUB_QUERY", "Failure", e)
                     return@launchWhenResumed
