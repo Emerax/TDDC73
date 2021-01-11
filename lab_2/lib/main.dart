@@ -134,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
       cardSideIndex = 0;
       cardHolderController.value = cardHolderController.value.copyWith(
         text: cardHolder,
-        //selection: TextSelection(baseOffset: newText.length, extentOffset: newText.length),
+        selection: TextSelection.fromPosition(TextPosition(offset: cardHolderController.text.length)),
         composing: TextRange.empty,
       );
     });
@@ -149,6 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void updateCVV(){
     String cvv = cvvController.text;
+    //FIX: Hantera undantagsfallet i CVV-längd för AMEX-kort.
     if (company == "amex") {
       if (cvv.length > 4) {
         cvv = cvv.substring(0, 4);
@@ -219,6 +220,12 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                               TextFormField(
                                 controller: cardHolderController,
+                                //FIX: Tillåt inga numeriska karaktärer i korthållarens namn.
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.deny(
+                                    RegExp("[0-9]")
+                                  )
+                                ],
                                 decoration: const InputDecoration(
                                   labelText: "Card Holder",
                                 ),
