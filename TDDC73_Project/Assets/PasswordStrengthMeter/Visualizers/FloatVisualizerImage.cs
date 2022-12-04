@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FloatVisualizerImage : PasswordStrengthVisualizerBase<float> {
+public class FloatVisualizerImage : MonoBehaviour, IPasswordStrengthVisualizer<float> {
     [SerializeField]
     private Color badColor;
     [SerializeField]
@@ -11,10 +11,10 @@ public class FloatVisualizerImage : PasswordStrengthVisualizerBase<float> {
     private Image bar;
     void Awake() {
         bar = GetComponentInChildren<Image>();
-        Visualize(0f);
+        VisualizePasswordStrength(0f);
     }
 
-    public override void Visualize(float passwordStrength) {
+    public void VisualizePasswordStrength(float passwordStrength) {
         bar.color = Color.Lerp(badColor, goodColor, passwordStrength);
         bar.fillAmount = passwordStrength;
     }
