@@ -14,7 +14,6 @@ public class PasswordStrengthProviderLength : PasswordStrengthProviderBase<float
     }
 
     public override float CalculatePasswordStrength(string password) {
-        Debug.Log($"Length: {password.Length}. Pass: {passLength}, Good: {goodLength}");
         if (goodLength > passLength) {
             return (float)(password.Length - passLength) / (goodLength - passLength);
         }
