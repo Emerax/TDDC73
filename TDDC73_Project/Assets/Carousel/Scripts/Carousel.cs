@@ -1,13 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class Carousel : MonoBehaviour {
-    [SerializeField]
-    private RectTransform contentRoot;
+public abstract class Carousel<DataType, ContainerType> where ContainerType : MonoBehaviour {
+    protected readonly CarouselContentAdapter<DataType, ContainerType> contentAdapter;
 
-    public RectTransform ContentRoot => contentRoot;
+    protected readonly List<ContainerType> children = new();
 
-
+    public Carousel(CarouselContentAdapter<DataType, ContainerType> contentAdapter) {
+        this.contentAdapter = contentAdapter;
+    }
 }
