@@ -9,12 +9,17 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -59,6 +64,7 @@ fun ThirdTimesTheCharmPreview() {
             val goodLength = 13
             val passwordStrengthFloat = calculatePasswordStrength(password, minLength, goodLength)
 
+            val forbiddenPasswords = setOf("password", "123", "admin", "secret", "password123")
             val criteria = PasswordCriteria(
                 listOf(
                     PasswordCriterion("Password MUST be at least $minLength characters long") {
@@ -73,9 +79,12 @@ fun ThirdTimesTheCharmPreview() {
                     PasswordCriterion("Password MUST contain at least one number") {
                         it.any { c: Char -> c.isDigit() }
                     },
-                    PasswordCriterion("Passwords MUST match!") {
-                        //TODO: Implement me!
-                        true
+//                    PasswordCriterion("Passwords MUST match!") {
+//                        //TODO: Implement me!
+//                        true
+//                    },
+                    PasswordCriterion("Your chosen password is too common!") {
+                        !forbiddenPasswords.contains(it.lowercase())
                     }
                 )
             )
@@ -110,22 +119,17 @@ fun ThirdTimesTheCharmPreview() {
                 )
                 Spacer(Modifier.height(16.dp))
                 PasswordStrengthMeter(
-                    criteria.issuesForPassword(password),
+                    criteria.resultForPassword(password),
                     {
                         Column {
-                            val fillFraction = 1f - it.size / criteria.totalCriteria().toFloat()
+                            val fillFraction = it.count { it.passed } / it.size.toFloat()
                             PasswordStrengthBar(
                                 passwordStrength = fillFraction,
                                 badColor = Color.Red,
                                 goodColor = Color.Green,
                                 modifier = Modifier.height(20.dp)
                             )
-                            if(it.isEmpty()) {
-                                Text("All good!")
-                            }
-                            else {
-                                Text(it[0])
-                            }
+                            PasswordCriteriaVisualizer(it)
                         }
                     },
                     label = {Text("Criteria Strength:")}
@@ -136,19 +140,33 @@ fun ThirdTimesTheCharmPreview() {
 }
 
 @Composable
-fun PasswordCriteriaVisualizer(modifier: Modifier = Modifier) {
-
+fun PasswordCriteriaVisualizer(criteriaResults: List<PasswordCriterionResult>, modifier: Modifier = Modifier) {
+    Column(modifier) {
+        for (result in criteriaResults) {
+            Row {
+                val image = if(result.passed) Icons.Default.Check else Icons.Default.Close
+                val color = if(result.passed) Color.Green else Color.Red
+                Icon(
+                    image,
+                    contentDescription = "A checkmark indicating this password criterion is fulfilled.",
+                    tint = color
+                )
+                Text(result.formulation)
+            }
+        }
+    }
 }
 
 class PasswordCriteria(private val criteria: List<PasswordCriterion>) {
-    fun issuesForPassword(password: String): List<String> {
-        return criteria.mapNotNull { if (it.criterionCheck(password)) null else it.formulation }
-    }
-
-    fun totalCriteria() : Int {
-        return criteria.size
+    fun resultForPassword(password: String): List<PasswordCriterionResult> {
+        return criteria.map { PasswordCriterionResult(it.formulation, it.criterionCheck(password)) }
     }
 }
+
+data class PasswordCriterionResult(
+    val formulation: String,
+    val passed: Boolean,
+)
 
 data class PasswordCriterion(
     val formulation: String,
