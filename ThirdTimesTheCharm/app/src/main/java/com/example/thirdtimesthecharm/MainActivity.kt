@@ -65,28 +65,53 @@ fun ThirdTimesTheCharmPreview() {
             val passwordStrengthFloat = calculatePasswordStrength(password, minLength, goodLength)
 
             val forbiddenPasswords = setOf("password", "123", "admin", "secret", "password123")
-            val criteria = PasswordCriteria(
-                listOf(
-                    PasswordCriterion("Password MUST be at least $minLength characters long") {
-                        it.length > minLength
-                    },
-                    PasswordCriterion("Password MUST contain at least one lower case letter") {
-                        it.any { c: Char -> c.isLowerCase() }
-                    },
-                    PasswordCriterion("Password MUST contain at least one upper case letter") {
-                        it.any { c: Char -> c.isUpperCase() }
-                    },
-                    PasswordCriterion("Password MUST contain at least one number") {
-                        it.any { c: Char -> c.isDigit() }
-                    },
+            val requiredCriteria: List<PasswordCriterion> = listOf(
+                PasswordCriterion("Password MUST be at least $minLength characters long") {
+                    it.length > minLength
+                },
+                PasswordCriterion("Password MUST contain at least one lower case letter") {
+                    it.any { c: Char -> c.isLowerCase() }
+                },
+                PasswordCriterion("Password MUST contain at least one upper case letter") {
+                    it.any { c: Char -> c.isUpperCase() }
+                },
+                PasswordCriterion("Password MUST contain at least one number") {
+                    it.any { c: Char -> c.isDigit() }
+                },
 //                    PasswordCriterion("Passwords MUST match!") {
 //                        //TODO: Implement me!
 //                        true
 //                    },
-                    PasswordCriterion("Your chosen password is too common!") {
-                        !forbiddenPasswords.contains(it.lowercase())
-                    }
-                )
+                PasswordCriterion("Your chosen password is too common!") {
+                    !forbiddenPasswords.contains(it.lowercase())
+                }
+            )
+
+            val strengthCriteria: List<(String) -> (Double)> = listOf(
+                {
+                    val margin = (password.length - minLength).coerceAtLeast(0).toDouble()
+                    margin / (goodLength - minLength)
+                },
+                {
+                    if (it.any { c: Char -> c.isLowerCase() }) 1.0 else 0.0
+                },
+                {
+                    if (it.any { c: Char -> c.isUpperCase() }) 1.0 else 0.0
+                },
+                {
+                    if (it.any { c: Char -> c.isDigit() }) 1.0 else 0.0
+                },
+                {
+                    if (it.any { c: Char ->
+                            c.isLowerCase()
+                                    || c.isUpperCase()
+                                    || c.isDigit()
+                        }) 0.0 else 1.0
+                }
+            )
+
+            val criteria = PasswordCriteria(
+                requiredCriteria
             )
 
             Column(modifier = Modifier.padding(16.dp)) {
@@ -122,9 +147,9 @@ fun ThirdTimesTheCharmPreview() {
                     criteria.resultForPassword(password),
                     {
                         Column {
-                            val fillFraction = it.count { it.passed } / it.size.toFloat()
+                            val fillFraction = strengthCriteria.sumOf { criterion -> criterion(password) } / strengthCriteria.size
                             PasswordStrengthBar(
-                                passwordStrength = fillFraction,
+                                passwordStrength = fillFraction.toFloat(),
                                 badColor = Color.Red,
                                 goodColor = Color.Green,
                                 modifier = Modifier.height(20.dp)
@@ -132,7 +157,7 @@ fun ThirdTimesTheCharmPreview() {
                             PasswordCriteriaVisualizer(it)
                         }
                     },
-                    label = {Text("Criteria Strength:")}
+                    label = { Text("Criteria Strength:") }
                 )
             }
         }
@@ -140,12 +165,15 @@ fun ThirdTimesTheCharmPreview() {
 }
 
 @Composable
-fun PasswordCriteriaVisualizer(criteriaResults: List<PasswordCriterionResult>, modifier: Modifier = Modifier) {
+fun PasswordCriteriaVisualizer(
+    criteriaResults: List<PasswordCriterionResult>,
+    modifier: Modifier = Modifier
+) {
     Column(modifier) {
         for (result in criteriaResults) {
             Row {
-                val image = if(result.passed) Icons.Default.Check else Icons.Default.Close
-                val color = if(result.passed) Color.Green else Color.Red
+                val image = if (result.passed) Icons.Default.Check else Icons.Default.Close
+                val color = if (result.passed) Color.Green else Color.Red
                 Icon(
                     image,
                     contentDescription = "A checkmark indicating this password criterion is fulfilled.",
