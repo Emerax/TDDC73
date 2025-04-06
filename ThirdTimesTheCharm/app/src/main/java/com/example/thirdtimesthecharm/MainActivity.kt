@@ -60,6 +60,7 @@ fun ThirdTimesTheCharmPreview() {
     ThirdTimesTheCharmTheme {
         Surface {
             var password by remember { (mutableStateOf("")) }
+            var passwordConfirmation by remember { (mutableStateOf("")) }
             val minLength = 6
             val goodLength = 13
             val passwordStrengthFloat = calculatePasswordStrength(password, minLength, goodLength)
@@ -78,10 +79,9 @@ fun ThirdTimesTheCharmPreview() {
                 PasswordCriterion("Password MUST contain at least one number") {
                     it.any { c: Char -> c.isDigit() }
                 },
-//                    PasswordCriterion("Passwords MUST match!") {
-//                        //TODO: Implement me!
-//                        true
-//                    },
+                PasswordCriterion("Passwords MUST match!") {
+                    it == passwordConfirmation
+                },
                 PasswordCriterion("Your chosen password is too common!") {
                     !forbiddenPasswords.contains(it.lowercase())
                 }
@@ -123,6 +123,14 @@ fun ThirdTimesTheCharmPreview() {
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
                 )
+                TextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = passwordConfirmation,
+                    onValueChange = { passwordConfirmation = it },
+                    label = { Text("Type password again") },
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+                )
                 PasswordStrengthMeter(
                     passwordStrengthFloat,
                     {
@@ -147,14 +155,15 @@ fun ThirdTimesTheCharmPreview() {
                     criteria.resultForPassword(password),
                     {
                         Column {
-                            val fillFraction = strengthCriteria.sumOf { criterion -> criterion(password) } / strengthCriteria.size
+                            val fillFraction =
+                                strengthCriteria.sumOf { criterion -> criterion(password) } / strengthCriteria.size
                             PasswordStrengthBar(
                                 passwordStrength = fillFraction.toFloat(),
                                 badColor = Color.Red,
                                 goodColor = Color.Green,
                                 modifier = Modifier.height(20.dp)
                             )
-                            PasswordCriteriaVisualizer(it)
+                            PasswordCriteriaVisualizer(it, mode = EPasswordCriteriaVisualiserMode.SHOW_FIRST_FAILED)
                         }
                     },
                     label = { Text("Criteria Strength:") }
@@ -167,22 +176,67 @@ fun ThirdTimesTheCharmPreview() {
 @Composable
 fun PasswordCriteriaVisualizer(
     criteriaResults: List<PasswordCriterionResult>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    mode: EPasswordCriteriaVisualiserMode? = EPasswordCriteriaVisualiserMode.SHOW_ALL
 ) {
-    Column(modifier) {
-        for (result in criteriaResults) {
-            Row {
-                val image = if (result.passed) Icons.Default.Check else Icons.Default.Close
-                val color = if (result.passed) Color.Green else Color.Red
-                Icon(
-                    image,
-                    contentDescription = "A checkmark indicating this password criterion is fulfilled.",
-                    tint = color
-                )
-                Text(result.formulation)
+    when (mode) {
+        EPasswordCriteriaVisualiserMode.SHOW_ALL -> {
+            Column(modifier) {
+                for (result in criteriaResults) {
+                    Row {
+                        val image = if (result.passed) Icons.Default.Check else Icons.Default.Close
+                        val color = if (result.passed) Color.Green else Color.Red
+                        Icon(
+                            image,
+                            contentDescription = "A checkmark indicating this password criterion is fulfilled.",
+                            tint = color
+                        )
+                        Text(result.formulation)
+                    }
+                }
             }
         }
+
+        EPasswordCriteriaVisualiserMode.SHOW_FAILED -> {
+            Column(modifier) {
+                for (result in criteriaResults) {
+                    if (!result.passed) {
+                        Row {
+                            val image = Icons.Default.Close
+                            val color = Color.Red
+                            Icon(
+                                image,
+                                contentDescription = "A checkmark indicating this password criterion is fulfilled.",
+                                tint = color
+                            )
+                            Text(result.formulation)
+                        }
+                    }
+                }
+            }
+        }
+
+        EPasswordCriteriaVisualiserMode.SHOW_FIRST_FAILED -> {
+            val result = criteriaResults.firstOrNull { !it.passed }
+            if (result != null) {
+                Row(modifier) {
+                    Icon(
+                        Icons.Default.Close,
+                        contentDescription = "A checkmark indicating this password criterion is fulfilled.",
+                        tint = Color.Red
+                    )
+                    Text(result.formulation)
+                }
+            }
+        }
+
+        else -> Text("ERROR: Received unknown mode type \"${mode}\"")
     }
+
+}
+
+enum class EPasswordCriteriaVisualiserMode {
+    SHOW_ALL, SHOW_FAILED, SHOW_FIRST_FAILED
 }
 
 class PasswordCriteria(private val criteria: List<PasswordCriterion>) {
