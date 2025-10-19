@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,18 +22,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.erima668.tddc73.passwordStrengthMeter.PasswordStrengthMeter
 import com.erima668.tddc73.passwordStrengthMeter.implementations.EPasswordCriteriaVisualiserMode
 import com.erima668.tddc73.passwordStrengthMeter.implementations.PasswordCriteria
 import com.erima668.tddc73.passwordStrengthMeter.implementations.PasswordCriteriaVisualizer
 import com.erima668.tddc73.passwordStrengthMeter.implementations.PasswordCriterion
 import com.erima668.tddc73.passwordStrengthMeter.implementations.PasswordStrengthBar
-import com.erima668.tddc73.passwordStrengthMeter.PasswordStrengthMeter
+import com.erima668.tddc73.stepsLeft.StepIndication
+import com.erima668.tddc73.stepsLeft.StepWithTitle
+import com.erima668.tddc73.stepsLeft.StepsLeft
 import com.example.thirdtimesthecharm.ui.theme.ThirdTimesTheCharmTheme
 
 class MainActivity : ComponentActivity() {
@@ -57,16 +58,81 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun ThirdTimesTheCharmPreview() {
     ThirdTimesTheCharmTheme {
-        Surface {
-            Column {
-                Text("Yes hello I am content")
-                Row {
-                    val numberList : List<Int> = listOf(1, 2, 3)
-                    for(number in numberList) {
-                        Text(number.toString())
-                    }
+        ThirdTimesTheCharmMain()
+    }
+}
+
+@Composable
+fun ThirdTimesTheCharmMain() {
+    var welcomeStepComplete: Boolean by remember { mutableStateOf(false) }
+    var stepsLeftComplete: Boolean by remember { mutableStateOf(false) }
+    var moreStepsLeftExamplesComplete: Boolean by remember { mutableStateOf(false) }
+    var passwordComplete : Boolean by remember { mutableStateOf(false) }
+    var combinedComplete: Boolean by remember { mutableStateOf(false) }
+    val steps: List<StepWithTitle> = listOf(
+        StepWithTitle(
+            "Welcome",
+            content = {
+                ThirdTimesTheCharmStep { welcomeStepComplete = true }
+            },
+            complete = { welcomeStepComplete }
+        ),
+        StepWithTitle(
+            "StepsLeft Component",
+            content = {
+                ThirdTimesTheCharmStep { stepsLeftComplete = true }
+            },
+            complete = { stepsLeftComplete }
+        ),
+        StepWithTitle(
+            "More StepsLeft Examples",
+            content = {
+                ThirdTimesTheCharmStep { moreStepsLeftExamplesComplete = true }
+            },
+            complete = {moreStepsLeftExamplesComplete}
+        ),
+        StepWithTitle(
+            "PasswordStrengthMeter component",
+            content = {
+                ThirdTimesTheCharmStep { passwordComplete = true }
+            },
+            complete = {passwordComplete}
+        ),
+        StepWithTitle(
+            "Combining the Two",
+            content = {
+                ThirdTimesTheCharmStep { combinedComplete = true }
+            },
+            complete = {combinedComplete}
+        ),
+        StepWithTitle(
+            "Complete",
+            content = {
+                Text("That's the end of the presentation!")
+            },
+            complete = {false}
+        )
+    )
+
+    Surface {
+        StepsLeft(
+            steps,
+            content = { stepIndex, step ->
+                Column {
+                    Text(step.title)
+                    step.content()
+                    StepIndication(stepIndex, steps.size)
                 }
             }
+        )
+    }
+}
+
+@Composable
+fun ThirdTimesTheCharmStep(onNextClicked: () -> Unit) {
+    Column {
+        Button(onClick = onNextClicked) {
+            Text("Next")
         }
     }
 }
