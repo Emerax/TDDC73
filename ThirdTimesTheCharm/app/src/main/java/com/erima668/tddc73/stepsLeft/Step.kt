@@ -12,3 +12,13 @@ class StepWithTitle(
     content: @Composable () -> Unit,
     complete: () -> Boolean,
 ) : Step(content, complete)
+
+fun <T : Step> stepsProgress(steps: Collection<T>): Float {
+    if(steps.size <= 1) {
+        return 1f;
+    }
+
+    val complete: Int = steps.count{s -> s.complete()}
+    val sizeExcludingLast: Int = steps.size - 1
+    return complete / sizeExcludingLast.toFloat()
+}

@@ -66,8 +66,7 @@ fun StepsLeftPreview() {
             Column {
                 StepsLeft(
                     steps,
-                    content = {
-                        stepIndex, step ->
+                    content = { stepIndex, step ->
                         Column {
                             StepIndication(stepIndex, steps.size)
                             step.content()
@@ -82,8 +81,8 @@ fun StepsLeftPreview() {
 @Composable
 fun StepIndication(index: Int, max: Int, modifier: Modifier = Modifier) {
     Row(modifier = modifier.padding(8.dp)) {
-        for (i in 0..< max) {
-            val color: Color = if(i == index) Color.Blue else Color.Gray
+        for (i in 0..<max) {
+            val color: Color = if (i == index) Color.Blue else Color.Gray
             Text(
                 modifier = Modifier
                     .padding(16.dp)
@@ -114,7 +113,6 @@ fun VerticalStepsLeftLayout(
 @Composable
 fun <T : Step> StepsLeft(
     steps: List<T>,
-    modifier: Modifier = Modifier,
     content: @Composable (stepIndex: Int, step: T) -> Unit
 ) {
     if (steps.isNotEmpty()) {
@@ -122,6 +120,24 @@ fun <T : Step> StepsLeft(
         if (stepIndex != -1) {
             val step = steps[stepIndex]
             content(stepIndex, step)
+        } else {
+            Text("ERROR: StepsLeft failed to find non-finished step!")
+        }
+    } else {
+        Text("ERROR: StepsLeft component has empty steps!")
+    }
+}
+
+@Composable
+fun <T : Step> StepsLeft(
+    steps: List<T>,
+    content: @Composable (step: T) -> Unit
+) {
+    if (steps.isNotEmpty()) {
+        val stepIndex = steps.indexOfFirst { !it.complete() }
+        if (stepIndex != -1) {
+            val step = steps[stepIndex]
+            content(step)
         } else {
             Text("ERROR: StepsLeft failed to find non-finished step!")
         }
