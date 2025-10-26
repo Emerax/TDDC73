@@ -6,8 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -36,8 +38,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.erima668.tddc73.passwordStrengthMeter.PasswordStrengthMeter
 import com.erima668.tddc73.passwordStrengthMeter.implementations.EPasswordCriteriaVisualiserMode
 import com.erima668.tddc73.passwordStrengthMeter.implementations.PasswordCriteria
@@ -60,7 +64,7 @@ class MainActivity : ComponentActivity() {
             ThirdTimesTheCharmTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Column(modifier = Modifier.padding(innerPadding)) {
-                        //App goes here
+                        ThirdTimesTheCharmMain()
                     }
                 }
             }
@@ -82,7 +86,6 @@ fun ThirdTimesTheCharmMain() {
     var stepsLeftComplete: Boolean by remember { mutableStateOf(false) }
     var stepsLeftExamplesComplete: Boolean by remember { mutableStateOf(false) }
     var passwordComplete: Boolean by remember { mutableStateOf(false) }
-    var combinedComplete: Boolean by remember { mutableStateOf(false) }
     val steps: List<StepWithTitle> = listOf(
         StepWithTitle(
             "TDDC73 Mini SDK Presentation",
@@ -96,7 +99,7 @@ fun ThirdTimesTheCharmMain() {
                     )
                 }
             },
-            complete = { true || welcomeStepComplete }
+            complete = { welcomeStepComplete }
         ),
         StepWithTitle(
             "StepsLeft Component",
@@ -115,7 +118,7 @@ fun ThirdTimesTheCharmMain() {
                     }
                 }
             },
-            complete = { true || stepsLeftComplete }
+            complete = { stepsLeftComplete }
         ),
         StepWithTitle(
             "StepsLeft Examples",
@@ -198,7 +201,7 @@ fun ThirdTimesTheCharmMain() {
                     }
                 }
             },
-            complete = { true || stepsLeftExamplesComplete }
+            complete = { stepsLeftExamplesComplete }
         ),
         StepWithTitle(
             "PasswordStrengthMeter component",
@@ -281,15 +284,6 @@ fun ThirdTimesTheCharmMain() {
             complete = { passwordComplete }
         ),
         StepWithTitle(
-            "Combining the Two",
-            content = {
-                ThirdTimesTheCharmStep({ combinedComplete = true }) {
-
-                }
-            },
-            complete = { combinedComplete }
-        ),
-        StepWithTitle(
             "Complete",
             content = {
                 Text("That's the end of the presentation!")
@@ -303,12 +297,17 @@ fun ThirdTimesTheCharmMain() {
             steps,
             content = { stepIndex, step ->
                 Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(step.title, modifier = Modifier.size(30.dp).fillMaxWidth())
-                    HorizontalDivider()
-                    step.content()
+                    Column{
+                        Text(step.title, fontSize = 30.sp, textAlign = TextAlign.Center)
+                        HorizontalDivider()
+                        step.content()
+                    }
                     StepIndication(stepIndex, steps.size)
                 }
             }
