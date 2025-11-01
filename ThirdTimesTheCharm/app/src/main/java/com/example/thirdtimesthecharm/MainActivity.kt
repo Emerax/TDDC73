@@ -146,7 +146,11 @@ fun ThirdTimesTheCharmMain() {
                     Step(content = {
                         Column {
                             Text("Or like this, where you must drag the slider to atleast 80%.")
-                            Slider(sliderValue, onValueChange = { v -> sliderValue = v })
+                            Slider(
+                                sliderValue,
+                                onValueChange = { v -> sliderValue = v },
+                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 0.dp)
+                                )
                         }
                     })
                     { sliderValue >= 0.8f },
@@ -175,7 +179,10 @@ fun ThirdTimesTheCharmMain() {
                 )
 
                 ThirdTimesTheCharmStep({ stepsLeftExamplesComplete = true }) {
-                    Column {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
                         Text("Content of each step can be easily swapped.")
                         StepsLeft(exampleSteps) { step: Step ->
                             step.content()
@@ -186,20 +193,24 @@ fun ThirdTimesTheCharmMain() {
                                     "component we want to display our progress."
                         )
                         CircularProgressIndicator(progress = { stepsProgress(exampleSteps) })
-                        HorizontalDivider()
-                        Text("Because of the above, it is also simple to enable steps that can go back or forth")
+                        HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp, horizontal = 0.dp))
+                        Text(
+                            "Because of the above, it is also simple to enable steps that can go back or forth")
                         StepsLeft(backAndForthSteps) { step: Step ->
                             step.content()
                         }
-                        Row {
-                            Button(onClick = { (--stepToDisplay).coerceIn(0, 4) }) {
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
+                            Button(onClick = { stepToDisplay = (--stepToDisplay).coerceIn(0, 4) }) {
                                 Text("Back")
                             }
-                            Button(onClick = { (++stepToDisplay).coerceIn(0, 4) }) {
+                            Button(onClick = { stepToDisplay = (++stepToDisplay).coerceIn(0, 4) }) {
                                 Text("Forward")
                             }
                         }
-                        LinearProgressIndicator(progress = { stepsProgress(backAndForthSteps) })
+                        LinearProgressIndicator(
+                            progress = { stepsProgress(backAndForthSteps) },
+                            modifier = Modifier.fillMaxWidth()
+                        )
                     }
                 }
             },
@@ -321,7 +332,7 @@ fun ThirdTimesTheCharmMain() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Column(modifier = Modifier.weight(1f)) {
+                    Column(modifier = Modifier.weight(1f).padding(horizontal = 8.dp)) {
                         Text(step.title, fontSize = 30.sp, textAlign = TextAlign.Center)
                         HorizontalDivider()
                         step.content()
