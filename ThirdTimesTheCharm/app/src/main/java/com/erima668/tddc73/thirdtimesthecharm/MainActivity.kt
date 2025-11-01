@@ -1,4 +1,4 @@
-package com.example.thirdtimesthecharm
+package com.erima668.tddc73.thirdtimesthecharm
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -53,7 +53,7 @@ import com.erima668.tddc73.stepsLeft.StepIndication
 import com.erima668.tddc73.stepsLeft.StepWithTitle
 import com.erima668.tddc73.stepsLeft.StepsLeft
 import com.erima668.tddc73.stepsLeft.stepsProgress
-import com.example.thirdtimesthecharm.ui.theme.ThirdTimesTheCharmTheme
+import com.erima668.tddc73.thirdtimesthecharm.ui.theme.ThirdTimesTheCharmTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

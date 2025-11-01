@@ -1,4 +1,4 @@
-package com.example.thirdtimesthecharm.ui.theme
+package com.erima668.tddc73.thirdtimesthecharm.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

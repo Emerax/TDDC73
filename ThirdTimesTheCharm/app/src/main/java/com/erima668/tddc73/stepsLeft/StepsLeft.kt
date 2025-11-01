@@ -18,7 +18,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.thirdtimesthecharm.ui.theme.ThirdTimesTheCharmTheme
+import com.erima668.tddc73.thirdtimesthecharm.ui.theme.ThirdTimesTheCharmTheme
 
 @Composable
 @Preview
