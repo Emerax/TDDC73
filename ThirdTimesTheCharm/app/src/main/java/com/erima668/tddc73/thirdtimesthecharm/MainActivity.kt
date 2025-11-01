@@ -255,7 +255,7 @@ fun ThirdTimesTheCharmMain() {
                             setOf("password", "123", "admin", "secret", "password123")
                         val requiredCriteria: List<PasswordCriterion> = listOf(
                             PasswordCriterion("Password MUST be at least $minLength characters long") {
-                                it.length > minLength
+                                it.length >= minLength
                             },
                             PasswordCriterion("Password MUST contain at least one lower case letter") {
                                 it.any { c: Char -> c.isLowerCase() }
@@ -287,7 +287,7 @@ fun ThirdTimesTheCharmMain() {
                             criteria.resultForPassword(password)
                         PasswordStrengthMeter(
                             criteria.resultForPassword(password),
-                            {
+                            { criteriaResults ->
                                 Column {
                                     val fillFraction =
                                         results.count { it.passed } / results.size.toFloat()
@@ -298,7 +298,7 @@ fun ThirdTimesTheCharmMain() {
                                         modifier = Modifier.height(20.dp)
                                     )
                                     PasswordCriteriaVisualizer(
-                                        it,
+                                        criteriaResults,
                                         mode = EPasswordCriteriaVisualiserMode.SHOW_FIRST_FAILED
                                     )
                                 }
