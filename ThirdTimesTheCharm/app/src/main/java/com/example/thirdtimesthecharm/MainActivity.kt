@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
@@ -36,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -197,7 +199,7 @@ fun ThirdTimesTheCharmMain() {
                                 Text("Forward")
                             }
                         }
-                        LinearProgressIndicator(progress = { stepsProgress(backAndForthSteps)})
+                        LinearProgressIndicator(progress = { stepsProgress(backAndForthSteps) })
                     }
                 }
             },
@@ -209,28 +211,40 @@ fun ThirdTimesTheCharmMain() {
                 var simplePassword by remember { (mutableStateOf("")) }
                 val minLength = 6
                 val goodLength = 13
-                val passwordStrengthFloat = calculatePasswordStrength(simplePassword, minLength, goodLength)
+                val passwordStrengthFloat =
+                    calculatePasswordStrength(simplePassword, minLength, goodLength)
                 ThirdTimesTheCharmStep({ passwordComplete = true }) {
-                    Column{
+                    Column {
                         Text("This page will showcase my PasswordStrengthMeter component.")
-                        Text("There are two main ways to work with this component. A simpler" +
-                                " version that simply visualizes a given value using any provided" +
-                                " visualizer and a more complicated version that allows for more" +
-                                " complex requirements.")
-                        Text("The following is an example of the simpler version which only " +
-                                "reflects password length")
-                        PasswordInput(simplePassword) {s -> simplePassword = s}
-                        PasswordStrengthMeter(passwordStrengthFloat,
-                            visualization = {floatStrength ->
-                                PasswordStrengthBar(floatStrength, Color.Red, Color.Green, Modifier.height(16.dp))
+                        Text(
+                            "There are two main ways to work with this component. A simpler" +
+                                    " version that simply visualizes a given value using any provided" +
+                                    " visualizer and a more complicated version that allows for more" +
+                                    " complex requirements."
+                        )
+                        Text(
+                            "The following is an example of the simpler version which only " +
+                                    "reflects password length"
+                        )
+                        PasswordInput(simplePassword) { s -> simplePassword = s }
+                        PasswordStrengthMeter(
+                            passwordStrengthFloat,
+                            visualization = { floatStrength ->
+                                PasswordStrengthBar(
+                                    floatStrength,
+                                    Color.Red,
+                                    Color.Green,
+                                    Modifier.height(16.dp)
+                                )
                             })
                         HorizontalDivider()
 
                         Spacer(Modifier.height(16.dp))
 
-                        var password : String by remember { mutableStateOf("") }
+                        var password: String by remember { mutableStateOf("") }
                         var passwordConfirmation by remember { mutableStateOf("") }
-                        val forbiddenPasswords = setOf("password", "123", "admin", "secret", "password123")
+                        val forbiddenPasswords =
+                            setOf("password", "123", "admin", "secret", "password123")
                         val requiredCriteria: List<PasswordCriterion> = listOf(
                             PasswordCriterion("Password MUST be at least $minLength characters long") {
                                 it.length > minLength
@@ -255,16 +269,20 @@ fun ThirdTimesTheCharmMain() {
                             requiredCriteria
                         )
 
-                        Text("And here is an example of the more complex one. As a bonus, " +
-                                "it's requirements are quite self-explanatory.")
-                        PasswordInput(password) {password = it}
-                        PasswordInput(passwordConfirmation) {passwordConfirmation = it}
-                        val results: List<PasswordCriterionResult> = criteria.resultForPassword(password)
+                        Text(
+                            "And here is an example of the more complex one. As a bonus, " +
+                                    "it's requirements are quite self-explanatory."
+                        )
+                        PasswordInput(password) { password = it }
+                        PasswordInput(passwordConfirmation) { passwordConfirmation = it }
+                        val results: List<PasswordCriterionResult> =
+                            criteria.resultForPassword(password)
                         PasswordStrengthMeter(
                             criteria.resultForPassword(password),
                             {
                                 Column {
-                                    val fillFraction = results.count{it.passed} / results.size.toFloat()
+                                    val fillFraction =
+                                        results.count { it.passed } / results.size.toFloat()
                                     PasswordStrengthBar(
                                         passwordStrength = fillFraction,
                                         badColor = Color.Red,
@@ -303,11 +321,12 @@ fun ThirdTimesTheCharmMain() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Column{
+                    Column(modifier = Modifier.weight(1f)) {
                         Text(step.title, fontSize = 30.sp, textAlign = TextAlign.Center)
                         HorizontalDivider()
                         step.content()
                     }
+
                     StepIndication(stepIndex, steps.size)
                 }
             }
@@ -317,8 +336,9 @@ fun ThirdTimesTheCharmMain() {
 
 @Composable
 fun ThirdTimesTheCharmStep(onNextClicked: () -> Unit, content: @Composable () -> Unit) {
-    Column {
+    Column(modifier = Modifier.wrapContentHeight(), verticalArrangement = Arrangement.SpaceBetween, horizontalAlignment = Alignment.CenterHorizontally) {
         content()
+        Spacer(modifier = Modifier.weight(1f))
         Button(onClick = onNextClicked) {
             Text("Next")
         }
@@ -326,7 +346,7 @@ fun ThirdTimesTheCharmStep(onNextClicked: () -> Unit, content: @Composable () ->
 }
 
 @Composable
-fun PasswordInput(value:String, onValueChanged: (String) -> Unit) {
+fun PasswordInput(value: String, onValueChanged: (String) -> Unit) {
     TextField(
         modifier = Modifier.fillMaxWidth(),
         value = value,
@@ -367,7 +387,6 @@ fun PasswordStrengthMeterPreview(modifier: Modifier = Modifier) {
 //                }) 0.0 else 1.0
 //        }
 //    )
-
 
 
     Column(modifier = Modifier.padding(16.dp)) {

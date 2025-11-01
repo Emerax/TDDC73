@@ -1,7 +1,9 @@
 package com.erima668.tddc73.stepsLeft
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
@@ -80,7 +82,7 @@ fun StepsLeftPreview() {
 
 @Composable
 fun StepIndication(index: Int, max: Int, modifier: Modifier = Modifier) {
-    Row(modifier = modifier.padding(8.dp)) {
+    Row(modifier = modifier.padding(8.dp).height(IntrinsicSize.Min)) {
         for (i in 0..<max) {
             val color: Color = if (i == index) Color.Blue else Color.Gray
             Text(
